@@ -1,0 +1,16 @@
+miniProjet\model\Groupe.class
+miniProjet\dao\GroupeDAO.class
+miniProjet\controller\GroupeController.class
+miniProjet\controller\MatiereController.class
+miniProjet\model\Enseignant.class
+miniProjet\model\Etudiant.class
+miniProjet\model\Matiere.class
+miniProjet\dao\EtudiantDAO.class
+miniProjet\dao\MatiereDAO.class
+miniProjet\App.class
+miniProjet\dao\DatabaseConnection.class
+miniProjet\controller\EnseignantController.class
+miniProjet\controller\EtudiantController.class
+miniProjet\controller\MainController.class
+module-info.class
+miniProjet\dao\EnseignantDAO.class

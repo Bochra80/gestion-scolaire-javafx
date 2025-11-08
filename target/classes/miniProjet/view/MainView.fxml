@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/17" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="miniProjet.controller.MainController"
+      style="-fx-background-color: #f0f0f0;">
+    
+    <padding>
+        <Insets top="30" right="50" bottom="30" left="50"/>
+    </padding>
+    
+    <Label text="GESTION SCOLAIRE" style="-fx-text-fill: #2c3e50;">
+        <font>
+            <Font name="System Bold" size="28"/>
+        </font>
+    </Label>
+    
+    <Label text="Menu Principal" style="-fx-text-fill: #34495e;">
+        <font>
+            <Font size="16"/>
+        </font>
+    </Label>
+    
+    <VBox spacing="15" alignment="CENTER">
+        <Button text="Gestion des Étudiants" onAction="#handleGestionEtudiants" 
+                prefWidth="250" prefHeight="40"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
+        </Button>
+        
+        <Button text="Gestion des Enseignants" onAction="#handleGestionEnseignants" 
+                prefWidth="250" prefHeight="40"
+                style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
+        </Button>
+        
+        <Button text="Gestion des Matières" onAction="#handleGestionMatieres" 
+                prefWidth="250" prefHeight="40"
+                style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
+        </Button>
+        
+        <Button text="Gestion des Groupes" onAction="#handleGestionGroupes" 
+                prefWidth="250" prefHeight="40"
+                style="-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
+        </Button>
+        
+        <Button text="Emploi du Temps" onAction="#handleEmploiDuTemps" 
+                prefWidth="250" prefHeight="40"
+                style="-fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
+        </Button>
+        
+        <Button text="Quitter" onAction="#handleQuitter" 
+                prefWidth="250" prefHeight="40"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
+        </Button>
+    </VBox>
+    
+    <Label text="© 2025 - Application de Gestion Scolaire" style="-fx-text-fill: #7f8c8d;">
+        <font>
+            <Font size="11"/>
+        </font>
+        <VBox.margin>
+            <Insets top="20"/>
+        </VBox.margin>
+    </Label>
+</VBox>
