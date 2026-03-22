@@ -1,52 +1,101 @@
-<!-- GroupeView.fxml -->
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="controller.GroupeController" prefWidth="800" prefHeight="550">
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="miniProjet.controller.GroupeController"
+            prefWidth="900" prefHeight="600">
+
+    <!-- BARRE HAUTE -->
     <top>
-        <VBox style="-fx-background-color: #e67e22; -fx-padding: 15;">
-            <Label text="GESTION DES GROUPES" style="-fx-text-fill: white;">
-                <font><Font name="System Bold" size="20"/></font>
+        <HBox spacing="10" alignment="CENTER_LEFT"
+              style="-fx-background-color:#f39c12;">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+
+            <Button text="⬅"
+                    onAction="#handleRetourMenu"
+                    style="-fx-background-color:#34495e; -fx-text-fill:white;"/>
+
+            <Label text="GESTION DES GROUPES"
+                   style="-fx-text-fill:white;">
+                <font>
+                    <Font size="20"/>
+                </font>
             </Label>
-        </VBox>
+        </HBox>
     </top>
-    
+
+    <!-- CONTENU -->
     <center>
         <VBox spacing="15">
-            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
-            
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
             <TitledPane text="Informations du groupe" collapsible="false">
                 <GridPane hgap="10" vgap="10">
-                    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
-                    <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                    <TextField fx:id="txtNom" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200"/>
-                    <Label text="Niveau:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-                    <TextField fx:id="txtNiveau" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="200"/>
-                    <Label text="Capacité:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                    <TextField fx:id="txtCapacite" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+
+                    <Label text="ID :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtId"
+           GridPane.rowIndex="0"
+           GridPane.columnIndex="1" promptText="ID (optionnel)"/>
+
+
+
+                    <Label text="Nom :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtNom" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Niveau :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtNiveau" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="Effectif maximum :" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtEffectifMax" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
                 </GridPane>
             </TitledPane>
-            
+
             <HBox spacing="10" alignment="CENTER">
-                <Button text="Ajouter" onAction="#handleAjouter" style="-fx-background-color: #2ecc71; -fx-text-fill: white;" prefWidth="100"/>
-                <Button text="Modifier" onAction="#handleModifier" style="-fx-background-color: #f39c12; -fx-text-fill: white;" prefWidth="100"/>
-                <Button text="Supprimer" onAction="#handleSupprimer" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" prefWidth="100"/>
-                <Button text="Actualiser" onAction="#handleActualiser" style="-fx-background-color: #3498db; -fx-text-fill: white;" prefWidth="100"/>
-                <Button text="Vider" onAction="#handleVider" style="-fx-background-color: #95a5a6; -fx-text-fill: white;" prefWidth="100"/>
-            </HBox>
-            
+
+    <Button text="Ajouter"
+            onAction="#handleAjouter"
+            style="-fx-background-color:#2ecc71; -fx-text-fill:white;"/>
+
+    <Button text="Modifier"
+            onAction="#handleModifier"
+            style="-fx-background-color:#f39c12; -fx-text-fill:white;"/>
+
+    <Button text="Supprimer"
+            onAction="#handleSupprimer"
+            style="-fx-background-color:#e74c3c; -fx-text-fill:white;"/>
+
+    <Button text="Actualiser"
+            onAction="#handleActualiser"
+            style="-fx-background-color:#3498db; -fx-text-fill:white;"/>
+
+    <Button text="Vider"
+            onAction="#handleVider"
+            style="-fx-background-color:#95a5a6; -fx-text-fill:white;"/>
+
+</HBox>
+
+
             <TableView fx:id="tableGroupes" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colId" text="ID" prefWidth="80"/>
-                    <TableColumn fx:id="colNom" text="Nom" prefWidth="250"/>
-                    <TableColumn fx:id="colNiveau" text="Niveau" prefWidth="200"/>
-                    <TableColumn fx:id="colCapacite" text="Capacité" prefWidth="150"/>
+                    <TableColumn fx:id="colId" text="ID"/>
+                    <TableColumn fx:id="colNom" text="Nom"/>
+                    <TableColumn fx:id="colNiveau" text="Niveau"/>
+                    <TableColumn fx:id="colEffectifMax" text="Effectif max"/>
                 </columns>
             </TableView>
+
         </VBox>
     </center>
 </BorderPane>

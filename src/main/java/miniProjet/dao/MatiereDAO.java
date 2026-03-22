@@ -1,4 +1,3 @@
-// MatiereDAO.java
 package miniProjet.dao;
 
 import miniProjet.model.Matiere;
@@ -7,69 +6,99 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MatiereDAO {
-    private Connection connection;
-    
+
+    private final Connection conn;
+
     public MatiereDAO() {
-        this.connection = DatabaseConnection.getInstance().getConnection();
+        conn = DatabaseConnection.getInstance().getConnection();
     }
-    
-    public boolean create(Matiere matiere) {
-        String sql = "INSERT INTO matieres (nom, code, coefficient, volume_horaire) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, matiere.getNom());
-            stmt.setString(2, matiere.getCode());
-            stmt.setInt(3, matiere.getCoefficient());
-            stmt.setInt(4, matiere.getVolumeHoraire());
-            return stmt.executeUpdate() > 0;
+
+    public List<Matiere> readAll() {
+        List<Matiere> list = new ArrayList<>();
+        String sql = "SELECT * FROM matieres";
+
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            while (rs.next()) {
+                list.add(new Matiere(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("code"),
+                        rs.getInt("coefficient"),
+                        rs.getInt("volume_horaire")
+                ));
+            }
+
         } catch (SQLException e) {
-            System.err.println("Erreur création matière: " + e.getMessage());
-            return false;
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public void create(Matiere m) {
+        String sql =
+                "INSERT INTO matieres (nom, code, coefficient, volume_horaire) VALUES (?,?,?,?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, m.getNom());
+            ps.setString(2, m.getCode());
+            ps.setInt(3, m.getCoefficient());
+            ps.setInt(4, m.getVolumeHoraire());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
-    
-    public List<Matiere> readAll() {
-        List<Matiere> matieres = new ArrayList<>();
-        String sql = "SELECT * FROM matieres ORDER BY nom";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+
+    public void update(Matiere m) {
+        String sql =
+                "UPDATE matieres SET nom=?, code=?, coefficient=?, volume_horaire=? WHERE id=?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, m.getNom());
+            ps.setString(2, m.getCode());
+            ps.setInt(3, m.getCoefficient());
+            ps.setInt(4, m.getVolumeHoraire());
+            ps.setInt(5, m.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int id) {
+        try (PreparedStatement ps =
+                     conn.prepareStatement("DELETE FROM matieres WHERE id=?")) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Matiere> search(String key) {
+        List<Matiere> list = new ArrayList<>();
+        String sql =
+                "SELECT * FROM matieres WHERE nom LIKE ? OR code LIKE ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + key + "%");
+            ps.setString(2, "%" + key + "%");
+
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                matieres.add(new Matiere(
-                    rs.getInt("id"),
-                    rs.getString("nom"),
-                    rs.getString("code"),
-                    rs.getInt("coefficient"),
-                    rs.getInt("volume_horaire")
+                list.add(new Matiere(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("code"),
+                        rs.getInt("coefficient"),
+                        rs.getInt("volume_horaire")
                 ));
             }
         } catch (SQLException e) {
-            System.err.println("Erreur lecture matières: " + e.getMessage());
+            e.printStackTrace();
         }
-        return matieres;
-    }
-    
-    public boolean update(Matiere matiere) {
-        String sql = "UPDATE matieres SET nom=?, code=?, coefficient=?, volume_horaire=? WHERE id=?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, matiere.getNom());
-            stmt.setString(2, matiere.getCode());
-            stmt.setInt(3, matiere.getCoefficient());
-            stmt.setInt(4, matiere.getVolumeHoraire());
-            stmt.setInt(5, matiere.getId());
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Erreur mise à jour matière: " + e.getMessage());
-            return false;
-        }
-    }
-    
-    public boolean delete(int id) {
-        String sql = "DELETE FROM matieres WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Erreur suppression matière: " + e.getMessage());
-            return false;
-        }
+        return list;
     }
 }

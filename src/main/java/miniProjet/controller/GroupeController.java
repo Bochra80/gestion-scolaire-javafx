@@ -1,117 +1,159 @@
-// GroupeController.java
 package miniProjet.controller;
-
+import miniProjet.controller.MainController;
 import miniProjet.dao.GroupeDAO;
 import miniProjet.model.Groupe;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+import javafx.collections.*;
+import javafx.fxml.*;
+import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+
+import java.io.IOException;
 
 public class GroupeController {
-    @FXML private TextField txtNom, txtNiveau, txtCapacite;
+
+    @FXML private TextField txtId;
+    @FXML private TextField txtNom;
+    @FXML private TextField txtNiveau;
+    @FXML private TextField txtEffectifMax;
+
     @FXML private TableView<Groupe> tableGroupes;
-    @FXML private TableColumn<Groupe, Integer> colId, colCapacite;
-    @FXML private TableColumn<Groupe, String> colNom, colNiveau;
-    
+    @FXML private TableColumn<Groupe, Integer> colId;
+    @FXML private TableColumn<Groupe, String> colNom;
+    @FXML private TableColumn<Groupe, String> colNiveau;
+    @FXML private TableColumn<Groupe, Integer> colEffectifMax;
+
     private GroupeDAO groupeDAO;
-    private ObservableList<Groupe> groupesList;
+    private ObservableList<Groupe> groupes;
     private Groupe selectedGroupe;
-    
+
     @FXML
     public void initialize() {
         groupeDAO = new GroupeDAO();
-        groupesList = FXCollections.observableArrayList();
-        
+        groupes = FXCollections.observableArrayList();
+
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colNiveau.setCellValueFactory(new PropertyValueFactory<>("niveau"));
-        colCapacite.setCellValueFactory(new PropertyValueFactory<>("capacite"));
-        
+        colEffectifMax.setCellValueFactory(new PropertyValueFactory<>("capacite"));
+
         refreshTable();
+
         tableGroupes.getSelectionModel().selectedItemProperty().addListener(
-            (obs, old, newVal) -> {
-                if (newVal != null) {
-                    selectedGroupe = newVal;
-                    fillForm(newVal);
-                }
-            }
+                (obs, o, g) -> { if (g != null) fillForm(g); }
         );
     }
-    
+
     @FXML
     private void handleAjouter() {
-        if (!validateInput()) return;
-        Groupe g = new Groupe(txtNom.getText(), txtNiveau.getText(), Integer.parseInt(txtCapacite.getText()));
+        if (!validate()) return;
+
+        Groupe g = new Groupe(
+                txtNom.getText().trim(),
+                txtNiveau.getText().trim(),
+                Integer.parseInt(txtEffectifMax.getText().trim())
+        );
+
         if (groupeDAO.create(g)) {
-            new Alert(Alert.AlertType.INFORMATION, "Groupe ajouté!").showAndWait();
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Groupe ajouté avec succès");
             refreshTable();
             clearForm();
         }
     }
-    
+
     @FXML
     private void handleModifier() {
         if (selectedGroupe == null) {
-            new Alert(Alert.AlertType.WARNING, "Sélectionnez un groupe").showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Erreur", "Sélectionnez un groupe");
             return;
         }
-        if (!validateInput()) return;
-        selectedGroupe.setNom(txtNom.getText());
-        selectedGroupe.setNiveau(txtNiveau.getText());
-        selectedGroupe.setCapacite(Integer.parseInt(txtCapacite.getText()));
-        if (groupeDAO.update(selectedGroupe)) {
-            new Alert(Alert.AlertType.INFORMATION, "Groupe modifié!").showAndWait();
-            refreshTable();
-            clearForm();
-        }
+
+        if (!validate()) return;
+
+        selectedGroupe.setNom(txtNom.getText().trim());
+        selectedGroupe.setNiveau(txtNiveau.getText().trim());
+        selectedGroupe.setCapacite(Integer.parseInt(txtEffectifMax.getText().trim()));
+
+        groupeDAO.update(selectedGroupe);
+        refreshTable();
+        clearForm();
     }
-    
+
     @FXML
     private void handleSupprimer() {
-        if (selectedGroupe == null) return;
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer?");
-        if (confirm.showAndWait().get() == ButtonType.OK) {
-            if (groupeDAO.delete(selectedGroupe.getId())) {
-                new Alert(Alert.AlertType.INFORMATION, "Supprimé!").showAndWait();
-                refreshTable();
-                clearForm();
-            }
+        if (selectedGroupe == null) {
+            showAlert(Alert.AlertType.WARNING, "Erreur", "Sélectionnez un groupe");
+            return;
         }
+
+        groupeDAO.delete(selectedGroupe.getId());
+        refreshTable();
+        clearForm();
     }
-    
-    @FXML private void handleActualiser() { refreshTable(); clearForm(); }
+
+    @FXML private void handleActualiser() { refreshTable(); }
     @FXML private void handleVider() { clearForm(); }
-    
-    private void refreshTable() {
-        groupesList.setAll(groupeDAO.readAll());
-        tableGroupes.setItems(groupesList);
+
+    @FXML
+    private void handleRetourMenu(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene().getWindow();
+        MainController.showMainMenu(stage);
     }
-    
+
+
+    private void refreshTable() {
+        groupes.setAll(groupeDAO.readAll());
+        tableGroupes.setItems(groupes);
+    }
+
     private void fillForm(Groupe g) {
+        selectedGroupe = g;
+        txtId.setText(String.valueOf(g.getId()));
         txtNom.setText(g.getNom());
         txtNiveau.setText(g.getNiveau());
-        txtCapacite.setText(String.valueOf(g.getCapacite()));
+        txtEffectifMax.setText(String.valueOf(g.getCapacite()));
     }
-    
+
     private void clearForm() {
-        txtNom.clear(); txtNiveau.clear(); txtCapacite.clear();
+        txtId.clear();
+        txtNom.clear();
+        txtNiveau.clear();
+        txtEffectifMax.clear();
         selectedGroupe = null;
         tableGroupes.getSelectionModel().clearSelection();
     }
-    
-    private boolean validateInput() {
+
+    private boolean validate() {
         if (txtNom.getText().trim().isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Nom obligatoire").showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Erreur", "Nom obligatoire");
+            return false;
+        }
+        if (txtNiveau.getText().trim().isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Erreur", "Niveau obligatoire");
+            return false;
+        }
+        if (txtEffectifMax.getText().trim().isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Erreur", "Effectif obligatoire");
             return false;
         }
         try {
-            Integer.parseInt(txtCapacite.getText());
+            Integer.parseInt(txtEffectifMax.getText().trim());
         } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.WARNING, "Capacité invalide").showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Erreur", "Effectif doit être un nombre");
             return false;
         }
         return true;
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String msg) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }

@@ -1,22 +1,28 @@
 package miniProjet.controller;
-
+import miniProjet.controller.MainController;
 import miniProjet.dao.EnseignantDAO;
 import miniProjet.model.Enseignant;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+import javafx.collections.*;
+import javafx.fxml.*;
+import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+
+import java.io.IOException;
 
 public class EnseignantController {
-    
+
+    @FXML private TextField txtId;
     @FXML private TextField txtNom;
     @FXML private TextField txtPrenom;
     @FXML private TextField txtEmail;
     @FXML private TextField txtTelephone;
     @FXML private TextField txtSpecialite;
     @FXML private TextField txtRecherche;
-    
+
     @FXML private TableView<Enseignant> tableEnseignants;
     @FXML private TableColumn<Enseignant, Integer> colId;
     @FXML private TableColumn<Enseignant, String> colNom;
@@ -24,161 +30,139 @@ public class EnseignantController {
     @FXML private TableColumn<Enseignant, String> colEmail;
     @FXML private TableColumn<Enseignant, String> colTelephone;
     @FXML private TableColumn<Enseignant, String> colSpecialite;
-    
+
     private EnseignantDAO enseignantDAO;
-    private ObservableList<Enseignant> enseignantsList;
-    private Enseignant selectedEnseignant;
-    
+    private ObservableList<Enseignant> enseignants;
+    private Enseignant selected;
+
     @FXML
     public void initialize() {
         enseignantDAO = new EnseignantDAO();
-        enseignantsList = FXCollections.observableArrayList();
-        
+        enseignants = FXCollections.observableArrayList();
+
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colPrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colTelephone.setCellValueFactory(new PropertyValueFactory<>("telephone"));
         colSpecialite.setCellValueFactory(new PropertyValueFactory<>("specialite"));
-        
+
         refreshTable();
-        
+
         tableEnseignants.getSelectionModel().selectedItemProperty().addListener(
-            (obs, oldSelection, newSelection) -> {
-                if (newSelection != null) {
-                    selectedEnseignant = newSelection;
-                    fillForm(newSelection);
+                (obs, oldVal, newVal) -> {
+                    if (newVal != null) {
+                        selected = newVal;
+                        fillForm(newVal);
+                    }
                 }
-            }
         );
     }
-    
+
     @FXML
     private void handleAjouter() {
-        if (!validateInput()) return;
-        
-        Enseignant enseignant = new Enseignant(
-            txtNom.getText(), txtPrenom.getText(), txtEmail.getText(),
-            txtTelephone.getText(), txtSpecialite.getText()
+        if (!validate()) return;
+
+        Enseignant e = new Enseignant(
+                txtNom.getText().trim(),
+                txtPrenom.getText().trim(),
+                txtEmail.getText().trim(),
+                txtTelephone.getText().trim(),
+                txtSpecialite.getText().trim()
         );
-        
-        if (enseignantDAO.create(enseignant)) {
-            showSuccess("Enseignant ajouté avec succès!");
-            refreshTable();
-            clearForm();
-        } else {
-            showError("Erreur lors de l'ajout");
-        }
-    }
-    
-    @FXML
-    private void handleModifier() {
-        if (selectedEnseignant == null) {
-            showWarning("Sélectionnez un enseignant");
-            return;
-        }
-        if (!validateInput()) return;
-        
-        selectedEnseignant.setNom(txtNom.getText());
-        selectedEnseignant.setPrenom(txtPrenom.getText());
-        selectedEnseignant.setEmail(txtEmail.getText());
-        selectedEnseignant.setTelephone(txtTelephone.getText());
-        selectedEnseignant.setSpecialite(txtSpecialite.getText());
-        
-        if (enseignantDAO.update(selectedEnseignant)) {
-            showSuccess("Enseignant modifié!");
-            refreshTable();
-            clearForm();
-        } else {
-            showError("Erreur modification");
-        }
-    }
-    
-    @FXML
-    private void handleSupprimer() {
-        if (selectedEnseignant == null) {
-            showWarning("Sélectionnez un enseignant");
-            return;
-        }
-        
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Confirmation");
-        confirm.setContentText("Supprimer " + selectedEnseignant.getNom() + "?");
-        
-        if (confirm.showAndWait().get() == ButtonType.OK) {
-            if (enseignantDAO.delete(selectedEnseignant.getId())) {
-                showSuccess("Enseignant supprimé!");
-                refreshTable();
-                clearForm();
-            } else {
-                showError("Erreur suppression");
+
+        if (!txtId.getText().trim().isEmpty()) {
+            try {
+                e.setId(Integer.parseInt(txtId.getText().trim()));
+            } catch (NumberFormatException ex) {
+                showAlert("ID invalide", "L'ID doit être un nombre.");
+                return;
             }
         }
-    }
-    
-    @FXML
-    private void handleRechercher() {
-        String keyword = txtRecherche.getText().trim();
-        if (keyword.isEmpty()) {
-            refreshTable();
-        } else {
-            enseignantsList.setAll(enseignantDAO.search(keyword));
-            tableEnseignants.setItems(enseignantsList);
-        }
-    }
-    
-    @FXML
-    private void handleActualiser() {
+
+        enseignantDAO.create(e);
         refreshTable();
         clearForm();
     }
-    
+
     @FXML
-    private void handleVider() {
+    private void handleModifier() {
+        if (selected == null) return;
+
+        selected.setNom(txtNom.getText());
+        selected.setPrenom(txtPrenom.getText());
+        selected.setEmail(txtEmail.getText());
+        selected.setTelephone(txtTelephone.getText());
+        selected.setSpecialite(txtSpecialite.getText());
+
+        enseignantDAO.update(selected);
+        refreshTable();
         clearForm();
     }
-    
-    private void refreshTable() {
-        enseignantsList.setAll(enseignantDAO.readAll());
-        tableEnseignants.setItems(enseignantsList);
+
+    @FXML
+    private void handleSupprimer() {
+        if (selected == null) return;
+        enseignantDAO.delete(selected.getId());
+        refreshTable();
+        clearForm();
     }
-    
+
+    @FXML private void handleActualiser() { refreshTable(); }
+    @FXML private void handleVider() { clearForm(); }
+
+    @FXML
+    private void handleRechercher() {
+        String key = txtRecherche.getText().trim();
+        tableEnseignants.setItems(
+                key.isEmpty()
+                        ? enseignants
+                        : FXCollections.observableArrayList(enseignantDAO.search(key))
+        );
+    }
+
+    @FXML
+    private void handleRetourMenu(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene().getWindow();
+        MainController.showMainMenu(stage);
+    }
+
+
+    private void refreshTable() {
+        enseignants.setAll(enseignantDAO.readAll());
+        tableEnseignants.setItems(enseignants);
+    }
+
     private void fillForm(Enseignant e) {
+        txtId.setText(String.valueOf(e.getId()));
         txtNom.setText(e.getNom());
         txtPrenom.setText(e.getPrenom());
         txtEmail.setText(e.getEmail());
         txtTelephone.setText(e.getTelephone());
         txtSpecialite.setText(e.getSpecialite());
     }
-    
+
     private void clearForm() {
+        txtId.clear();
         txtNom.clear();
         txtPrenom.clear();
         txtEmail.clear();
         txtTelephone.clear();
         txtSpecialite.clear();
         txtRecherche.clear();
-        selectedEnseignant = null;
-        tableEnseignants.getSelectionModel().clearSelection();
+        selected = null;
     }
-    
-    private boolean validateInput() {
-        if (txtNom.getText().trim().isEmpty() || txtPrenom.getText().trim().isEmpty()) {
-            showWarning("Nom et prénom obligatoires");
-            return false;
-        }
-        return true;
+
+    private boolean validate() {
+        return !txtNom.getText().isEmpty()
+                && !txtPrenom.getText().isEmpty();
     }
-    
-    private void showSuccess(String msg) {
-        new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
-    }
-    
-    private void showError(String msg) {
-        new Alert(Alert.AlertType.ERROR, msg).showAndWait();
-    }
-    
-    private void showWarning(String msg) {
-        new Alert(Alert.AlertType.WARNING, msg).showAndWait();
+
+    private void showAlert(String title, String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }

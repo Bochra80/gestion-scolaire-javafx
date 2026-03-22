@@ -1,4 +1,5 @@
 package miniProjet.model;
+
 public class Etudiant {
     private int id;
     private String nom;
@@ -6,48 +7,99 @@ public class Etudiant {
     private String dateNaissance;
     private String email;
     private String telephone;
+    private String adresse;
     
-    // Constructeurs
+    // Constructeur vide
     public Etudiant() {}
     
-    public Etudiant(int id, String nom, String prenom, String dateNaissance, String email, String telephone) {
+    // Constructeur sans ID (pour création)
+    public Etudiant(String nom, String prenom, String dateNaissance, String email, String telephone, String adresse) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateNaissance = dateNaissance;
+        this.email = email;
+        this.telephone = telephone;
+        this.adresse = adresse;
+    }
+    
+    // Constructeur complet (avec ID, pour lecture)
+    public Etudiant(int id, String nom, String prenom, String dateNaissance, String email, String telephone, String adresse) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.email = email;
         this.telephone = telephone;
-    }
-    
-    public Etudiant(String nom, String prenom, String dateNaissance, String email, String telephone) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.dateNaissance = dateNaissance;
-        this.email = email;
-        this.telephone = telephone;
+        this.adresse = adresse;
     }
     
     // Getters et Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
     
-    public String getNom() { return nom; }
-    public void setNom(String nom) { this.nom = nom; }
+    public void setId(int id) {
+        this.id = id;
+    }
     
-    public String getPrenom() { return prenom; }
-    public void setPrenom(String prenom) { this.prenom = prenom; }
+    public String getNom() {
+        return nom;
+    }
     
-    public String getDateNaissance() { return dateNaissance; }
-    public void setDateNaissance(String dateNaissance) { this.dateNaissance = dateNaissance; }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
     
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getPrenom() {
+        return prenom;
+    }
     
-    public String getTelephone() { return telephone; }
-    public void setTelephone(String telephone) { this.telephone = telephone; }
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+    
+    public String getDateNaissance() {
+        return dateNaissance;
+    }
+    
+    public void setDateNaissance(String dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public String getTelephone() {
+        return telephone;
+    }
+    
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+    
+    public String getAdresse() {
+        return adresse;
+    }
+    
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
     
     @Override
     public String toString() {
-        return nom + " " + prenom;
+        return "Etudiant{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", dateNaissance='" + dateNaissance + '\'' +
+                ", email='" + email + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", adresse='" + adresse + '\'' +
+                '}';
     }
 }

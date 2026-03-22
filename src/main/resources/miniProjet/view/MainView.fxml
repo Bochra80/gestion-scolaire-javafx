@@ -5,67 +5,113 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/17" 
-      xmlns:fx="http://javafx.com/fxml/1" 
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="miniProjet.controller.MainController"
-      style="-fx-background-color: #f0f0f0;">
-    
+      prefWidth="950"
+      prefHeight="550"
+      style="-fx-background-color: #f4f6f8;"
+      spacing="15"
+      alignment="TOP_CENTER">
+
     <padding>
-        <Insets top="30" right="50" bottom="30" left="50"/>
+        <Insets top="30" right="40" bottom="20" left="40"/>
     </padding>
-    
-    <Label text="GESTION SCOLAIRE" style="-fx-text-fill: #2c3e50;">
+
+    <!-- TITRE -->
+    <Label text="Application de Gestion Scolaire"
+           style="-fx-text-fill:#2c3e50; -fx-font-weight:bold;">
         <font>
-            <Font name="System Bold" size="28"/>
+            <Font size="24"/>
         </font>
     </Label>
-    
-    <Label text="Menu Principal" style="-fx-text-fill: #34495e;">
+
+    <Label text="Sélectionnez un module à gérer"
+           style="-fx-text-fill:#7f8c8d;">
         <font>
-            <Font size="16"/>
+            <Font size="13"/>
         </font>
     </Label>
-    
-    <VBox spacing="15" alignment="CENTER">
-        <Button text="Gestion des Étudiants" onAction="#handleGestionEtudiants" 
-                prefWidth="250" prefHeight="40"
-                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
-        </Button>
-        
-        <Button text="Gestion des Enseignants" onAction="#handleGestionEnseignants" 
-                prefWidth="250" prefHeight="40"
-                style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
-        </Button>
-        
-        <Button text="Gestion des Matières" onAction="#handleGestionMatieres" 
-                prefWidth="250" prefHeight="40"
-                style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
-        </Button>
-        
-        <Button text="Gestion des Groupes" onAction="#handleGestionGroupes" 
-                prefWidth="250" prefHeight="40"
-                style="-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
-        </Button>
-        
-        <Button text="Emploi du Temps" onAction="#handleEmploiDuTemps" 
-                prefWidth="250" prefHeight="40"
-                style="-fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
-        </Button>
-        
-        <Button text="Quitter" onAction="#handleQuitter" 
-                prefWidth="250" prefHeight="40"
-                style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;">
-        </Button>
-    </VBox>
-    
-    <Label text="© 2025 - Application de Gestion Scolaire" style="-fx-text-fill: #7f8c8d;">
-        <font>
-            <Font size="11"/>
-        </font>
+
+    <!-- BOUTONS -->
+    <GridPane hgap="20" vgap="15" alignment="CENTER">
         <VBox.margin>
-            <Insets top="20"/>
+            <Insets top="10"/>
         </VBox.margin>
-    </Label>
+
+        <Button text="Gestion des Étudiants"
+                onAction="#handleGestionEtudiants"
+                prefWidth="230" prefHeight="40"
+                style="-fx-background-color:#3498db;-fx-text-fill:white;-fx-font-size:13px;-fx-cursor:hand;"/>
+
+        <Button text="Gestion des Enseignants"
+                onAction="#handleGestionEnseignants"
+                prefWidth="230" prefHeight="40"
+                GridPane.columnIndex="1"
+                style="-fx-background-color:#e74c3c;-fx-text-fill:white;-fx-font-size:13px;-fx-cursor:hand;"/>
+
+        <Button text="Gestion des Matières"
+                onAction="#handleGestionMatieres"
+                prefWidth="230" prefHeight="40"
+                GridPane.rowIndex="1"
+                style="-fx-background-color:#2ecc71;-fx-text-fill:white;-fx-font-size:13px;-fx-cursor:hand;"/>
+
+        <Button text="Gestion des Groupes"
+                onAction="#handleGestionGroupes"
+                prefWidth="230" prefHeight="40"
+                GridPane.rowIndex="1" GridPane.columnIndex="1"
+                style="-fx-background-color:#f39c12;-fx-text-fill:white;-fx-font-size:13px;-fx-cursor:hand;"/>
+
+        <Button text="Gestion des Emplois du Temps"
+                onAction="#handleEmploiDuTemps"
+                prefWidth="480" prefHeight="40"
+                GridPane.rowIndex="2" GridPane.columnSpan="2"
+                style="-fx-background-color:#9b59b6;-fx-text-fill:white;-fx-font-size:13px;-fx-cursor:hand;"/>
+    </GridPane>
+
+    <!-- QUITTER -->
+    <Button text="Quitter"
+            onAction="#handleQuitter"
+            prefWidth="480"
+            prefHeight="40"
+            style="-fx-background-color:#e74c3c;-fx-text-fill:white;-fx-font-size:13px;-fx-font-weight:bold;-fx-cursor:hand;">
+        <VBox.margin>
+            <Insets top="5"/>
+        </VBox.margin>
+    </Button>
+
+    <!-- SPACER POUR POUSSER LES STATS EN BAS -->
+    <VBox VBox.vgrow="ALWAYS"/>
+
+    <!-- STATISTIQUES (TOUJOURS VISIBLE EN BAS) -->
+    <VBox spacing="8"
+          style="-fx-background-color:#ffffff;-fx-border-color:#cccccc;-fx-border-width:1;-fx-padding:12;-fx-background-radius:5;-fx-border-radius:5;">
+
+        <VBox.margin>
+            <Insets top="10"/>
+        </VBox.margin>
+
+        <Label text="Statistiques Rapides"
+               style="-fx-font-weight:bold;-fx-font-size:13px;-fx-text-fill:#2c3e50;"/>
+
+        <HBox spacing="35" alignment="CENTER_LEFT">
+            <Label text="Nombre d'étudiants :" style="-fx-font-size:11px;-fx-text-fill:#7f8c8d;"/>
+            <Label fx:id="lblEtudiants" text="0" style="-fx-font-size:12px;-fx-font-weight:bold;-fx-text-fill:#3498db;"/>
+
+            <Label text="Nombre d'enseignants :" style="-fx-font-size:11px;-fx-text-fill:#7f8c8d;"/>
+            <Label fx:id="lblEnseignants" text="0" style="-fx-font-size:12px;-fx-font-weight:bold;-fx-text-fill:#e74c3c;"/>
+        </HBox>
+
+        <HBox spacing="35" alignment="CENTER_LEFT">
+            <Label text="Nombre de matières :" style="-fx-font-size:11px;-fx-text-fill:#7f8c8d;"/>
+            <Label fx:id="lblMatieres" text="0" style="-fx-font-size:12px;-fx-font-weight:bold;-fx-text-fill:#2ecc71;"/>
+
+            <Label text="Nombre de groupes :" style="-fx-font-size:11px;-fx-text-fill:#7f8c8d;"/>
+            <Label fx:id="lblGroupes" text="0" style="-fx-font-size:12px;-fx-font-weight:bold;-fx-text-fill:#f39c12;"/>
+        </HBox>
+    </VBox>
+
 </VBox>

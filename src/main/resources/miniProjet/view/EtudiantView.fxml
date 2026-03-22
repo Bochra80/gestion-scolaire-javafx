@@ -5,92 +5,121 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="controller.EtudiantController"
-            prefWidth="900" prefHeight="600">
-    
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="miniProjet.controller.EtudiantController"
+            prefWidth="1000" prefHeight="650">
+
+    <!-- BARRE HAUTE -->
     <top>
-        <VBox style="-fx-background-color: #3498db; -fx-padding: 15;">
-            <Label text="GESTION DES ÉTUDIANTS" style="-fx-text-fill: white;">
+        <HBox spacing="10" alignment="CENTER_LEFT"
+              style="-fx-background-color:#1e40af;">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+
+            <Button text="⬅"
+                    onAction="#handleRetourMenu"
+                    style="-fx-background-color:#1f2937; -fx-text-fill:white;"/>
+
+            <Label text="GESTION DES ÉTUDIANTS"
+                   style="-fx-text-fill:white;">
                 <font>
-                    <Font name="System Bold" size="20"/>
+                    <Font size="20"/>
                 </font>
             </Label>
-        </VBox>
+        </HBox>
     </top>
-    
+
+    <!-- CONTENU -->
     <center>
         <VBox spacing="15">
             <padding>
                 <Insets top="15" right="15" bottom="15" left="15"/>
             </padding>
-            
-            <!-- Formulaire -->
+
+            <!-- FORMULAIRE -->
             <TitledPane text="Informations de l'étudiant" collapsible="false">
                 <GridPane hgap="10" vgap="10">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10"/>
                     </padding>
-                    
-                    <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                    <TextField fx:id="txtNom" GridPane.rowIndex="0" GridPane.columnIndex="1" 
-                               prefWidth="200"/>
-                    
-                    <Label text="Prénom:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-                    <TextField fx:id="txtPrenom" GridPane.rowIndex="0" GridPane.columnIndex="3" 
-                               prefWidth="200"/>
-                    
-                    <Label text="Date de naissance:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                    <TextField fx:id="txtDateNaissance" GridPane.rowIndex="1" GridPane.columnIndex="1" 
-                               promptText="AAAA-MM-JJ"/>
-                    
-                    <Label text="Email:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
-                    <TextField fx:id="txtEmail" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
-                    
-                    <Label text="Téléphone:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                    <TextField fx:id="txtTelephone" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="ID :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtId" editable="false"
+                               GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="ID (optionnel)" />
+
+                    <Label text="Nom :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtNom"
+                               GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Prénom :" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                    <TextField fx:id="txtPrenom"
+                               GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+
+                    <Label text="Date naissance :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtDateNaissance"
+                               GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="Email :" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+                    <TextField fx:id="txtEmail"
+                               GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+
+                    <Label text="Téléphone :" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="txtTelephone"
+                               GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                    <Label text="Adresse :" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+                    <TextField fx:id="txtAdresse"
+                               GridPane.rowIndex="3" GridPane.columnIndex="3"/>
                 </GridPane>
             </TitledPane>
-            
-            <!-- Boutons d'action -->
+
+            <!-- BOUTONS COLORÉS -->
             <HBox spacing="10" alignment="CENTER">
-                <Button text="Ajouter" onAction="#handleAjouter" 
-                        style="-fx-background-color: #2ecc71; -fx-text-fill: white;"
-                        prefWidth="100"/>
-                <Button text="Modifier" onAction="#handleModifier" 
-                        style="-fx-background-color: #f39c12; -fx-text-fill: white;"
-                        prefWidth="100"/>
-                <Button text="Supprimer" onAction="#handleSupprimer" 
-                        style="-fx-background-color: #e74c3c; -fx-text-fill: white;"
-                        prefWidth="100"/>
-                <Button text="Actualiser" onAction="#handleActualiser" 
-                        style="-fx-background-color: #3498db; -fx-text-fill: white;"
-                        prefWidth="100"/>
-                <Button text="Vider" onAction="#handleVider" 
-                        style="-fx-background-color: #95a5a6; -fx-text-fill: white;"
-                        prefWidth="100"/>
+                <Button text="Ajouter"
+                        onAction="#handleAjouter"
+                        style="-fx-background-color:#22c55e; -fx-text-fill:white;"/>
+
+                <Button text="Modifier"
+                        onAction="#handleModifier"
+                        style="-fx-background-color:#f59e0b; -fx-text-fill:white;"/>
+
+                <Button text="Supprimer"
+                        onAction="#handleSupprimer"
+                        style="-fx-background-color:#ef4444; -fx-text-fill:white;"/>
+
+                <Button text="Actualiser"
+                        onAction="#handleActualiser"
+                        style="-fx-background-color:#3b82f6; -fx-text-fill:white;"/>
+
+                <Button text="Vider"
+                        onAction="#handleVider"
+                        style="-fx-background-color:#9ca3af; -fx-text-fill:white;"/>
             </HBox>
-            
-            <!-- Recherche -->
+
+            <!-- 🔍 BARRE DE RECHERCHE (CENTRÉE) -->
             <HBox spacing="10" alignment="CENTER">
-                <Label text="Rechercher:"/>
+                <Label text="Rechercher :" />
                 <TextField fx:id="txtRecherche" prefWidth="300"/>
-                <Button text="Rechercher" onAction="#handleRechercher" 
-                        style="-fx-background-color: #9b59b6; -fx-text-fill: white;"/>
+                <Button text="Rechercher"
+                        onAction="#handleRechercher"
+                        style="-fx-background-color:#9333ea; -fx-text-fill:white;"/>
             </HBox>
-            
-            <!-- Table -->
+
+            <!-- TABLE -->
             <TableView fx:id="tableEtudiants" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
-                    <TableColumn fx:id="colNom" text="Nom" prefWidth="150"/>
-                    <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="150"/>
-                    <TableColumn fx:id="colDateNaissance" text="Date de naissance" prefWidth="130"/>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="colNom" text="Nom" prefWidth="120"/>
+                    <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="120"/>
+                    <TableColumn fx:id="colDateNaissance" text="Naissance" prefWidth="120"/>
                     <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
                     <TableColumn fx:id="colTelephone" text="Téléphone" prefWidth="120"/>
+                    <TableColumn fx:id="colAdresse" text="Adresse" prefWidth="150"/>
                 </columns>
             </TableView>
+
         </VBox>
     </center>
 </BorderPane>
