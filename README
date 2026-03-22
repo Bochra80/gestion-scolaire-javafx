@@ -1,0 +1,29 @@
+# Gestion Scolaire - Application JavaFX
+
+## 📌 Description
+Application JavaFX de gestion scolaire permettant de gérer les étudiants, leurs notes et calculer les moyennes avec interface graphique et base de données MySQL.
+
+## 🚀 Fonctionnalités
+- Gestion des étudiants
+- Ajout et modification des notes
+- Calcul automatique des moyennes
+- Interface graphique JavaFX
+- Connexion base de données MySQL
+
+## 🖥️ Interface
+- Interface moderne avec JavaFX
+- Navigation simple
+- Gestion des formulaires
+
+## 🛠️ Technologies
+- Java
+- JavaFX
+- MySQL
+- JDBC
+
+## ⚙️ Installation
+1. Cloner le projet
+2. Ouvrir avec IntelliJ ou Eclipse
+3. Configurer MySQL
+4. Lancer l'application
+
